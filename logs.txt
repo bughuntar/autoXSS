@@ -1,0 +1,3 @@
+   90    90 32557 coindcx.com_gau_equalTo.txt
+   50   430 15381 coindcx.com_unique_urls.txt
+  140   520 47938 total
