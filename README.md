@@ -24,7 +24,7 @@ go install github.com/projectdiscovery/httpx/cmd/httpx@latest
 # Python3 should be available by default on most systems
 ```
 
-## Prepare your Machine: Selenium and ChromeDriver
+## Dependencies: Selenium and ChromeDriver
 >Tested Operating System: Ubuntu and kali linux
 ```
  wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
