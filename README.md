@@ -24,6 +24,23 @@ go install github.com/projectdiscovery/httpx/cmd/httpx@latest
 # Python3 should be available by default on most systems
 ```
 
+## Prepare your Machine: Selenium and ChromeDriver
+>Tested Operating System: Ubuntu and kali linux
+```
+ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+ sudo dpkg -i google-chrome-stable_current_amd64.deb
+ sudo apt-get -f install
+ sudo apt install python3-selenium
+ google-chrome --version
+ rm -rf google-chrome-stable_current_amd64.deb
+ wget https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.99/linux64/chromedriver-linux64.zip
+ unzip chromedriver-linux64.zip
+ sudo mv chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+ sudo chmod +x /usr/local/bin/chromedriver
+ chromedriver --version
+ rm -rf chromedriver-linux64.zip
+```
+
 ## File Structure
 
 - `domain.txt` - A file containing a list of domains to scan. Each domain should be on a new line.
