@@ -56,7 +56,7 @@ def main(urls_file, output_file, num_threads):
     chunk_size = len(urls) // num_threads
     threads = []
 
-    driver_path = "/usr/local/bin/chromedriver"
+    driver_path = "/usr/bin/chromedriver"
     for i in range(num_threads):
         chunk = urls[i*chunk_size:(i+1)*chunk_size]
         t = threading.Thread(target=worker, args=(chunk, driver_path, output_file))
